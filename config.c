@@ -125,6 +125,16 @@ void config(conf *conf_ptr, char *conf)
     }
     fclose(fp);
 
+    int src_dir_len = strlen(val_src_dir);
+    if(src_dir_len > 0)
+    {
+        if(val_src_dir[src_dir_len - 1] != '/')
+        {
+            val_src_dir[src_dir_len] = '/';
+            val_src_dir[src_dir_len + 1] = 0;
+        }
+    }
+
     strcpy(conf_ptr->src_dir, val_src_dir);
     strcpy(conf_ptr->dst_dir, val_dst_dir);
     strcpy(conf_ptr->user_pwd, val_user_pwd);
