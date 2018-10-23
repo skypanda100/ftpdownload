@@ -74,20 +74,21 @@ int main(int argc,char **argv)
                 diff_and_download(&cf, newest_file_ptr_ptr, newest_file_count, last_newest_file_ptr_ptr, last_newest_file_count);
             }
             is_first = 0;
-        }
 
-        if(last_newest_file_ptr_ptr != NULL)
-        {
-            for(int i = 0;i < last_newest_file_count;i++)
+            if(last_newest_file_ptr_ptr != NULL)
             {
-                free(last_newest_file_ptr_ptr[i]);
+                for(int i = 0;i < last_newest_file_count;i++)
+                {
+                    free(last_newest_file_ptr_ptr[i]);
+                }
+                free(last_newest_file_ptr_ptr);
+                last_newest_file_ptr_ptr = NULL;
             }
-            free(last_newest_file_ptr_ptr);
-            last_newest_file_ptr_ptr = NULL;
+
+            last_newest_file_ptr_ptr = newest_file_ptr_ptr;
+            last_newest_file_count = newest_file_count;
         }
 
-        last_newest_file_ptr_ptr = newest_file_ptr_ptr;
-        last_newest_file_count = newest_file_count;
     #ifndef TEST
         sleep(cf.sleep_time);
     }
