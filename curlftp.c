@@ -183,6 +183,7 @@ void get_newest_files(const char *path_ptr, const char *user_pwd_ptr, char ***ne
 
 void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int newest_file_count, char **last_newest_file_ptr_ptr, int last_newest_file_count)
 {
+    char local_dir[1024] = {0};
     char dir[1024] = {0};
     char path[1024] = {0};
     for(int i = 0;i < newest_file_count;i++)
@@ -207,10 +208,11 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
                     break;
                 }
             }
+            memset(local_dir, 0, sizeof(local_dir));
             memset(dir, 0, sizeof(dir));
             strncpy(dir, newest_file_ptr, j);
-            sprintf(dir, "%s/%s", conf_ptr->dst_dir, dir + strlen(conf_ptr->src_dir));
-            if(make_dir(dir) == 0)
+            sprintf(local_dir, "%s/%s", conf_ptr->dst_dir, dir + strlen(conf_ptr->src_dir));
+            if(make_dir(local_dir) == 0)
             {
                 memset(path, 0, sizeof(path));
                 sprintf(path, "%s/%s.%s", conf_ptr->dst_dir, newest_file_ptr + strlen(conf_ptr->src_dir), TMP_SUFFIX_PTR);
