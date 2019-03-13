@@ -59,14 +59,15 @@ int main(int argc,char **argv)
         // find newest files
         char **newest_file_ptr_ptr = NULL;
         int newest_file_count = 0;
-        get_newest_files(cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
+        int ret = get_newest_files(cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
 
-        for(int i = 0;i < newest_file_count;i++)
-        {
-            printf("%s\n", newest_file_ptr_ptr[i]);
-        }
+//        for(int i = 0;i < newest_file_count;i++)
+//        {
+//            printf("%s\n", newest_file_ptr_ptr[i]);
+//        }
+        printf("newest files count: %d\n", newest_file_count);
 
-        if(newest_file_count > 0)
+        if(ret == 0)
         {
             // diff and download
             if(!is_first)
@@ -79,7 +80,10 @@ int main(int argc,char **argv)
             {
                 for(int i = 0;i < last_newest_file_count;i++)
                 {
-                    free(last_newest_file_ptr_ptr[i]);
+                    if(last_newest_file_ptr_ptr[i] != NULL)
+                    {
+                        free(last_newest_file_ptr_ptr[i]);
+                    }
                 }
                 free(last_newest_file_ptr_ptr);
                 last_newest_file_ptr_ptr = NULL;
@@ -87,6 +91,20 @@ int main(int argc,char **argv)
 
             last_newest_file_ptr_ptr = newest_file_ptr_ptr;
             last_newest_file_count = newest_file_count;
+        } else {
+            printf("some errors happened in listing files!\n");
+            if(newest_file_ptr_ptr != NULL)
+            {
+                for(int i = 0;i < newest_file_count;i++)
+                {
+                    if(newest_file_ptr_ptr[i] != NULL)
+                    {
+                        free(newest_file_ptr_ptr[i]);
+                    }
+                }
+                free(newest_file_ptr_ptr);
+                newest_file_ptr_ptr = NULL;
+            }
         }
 
     #ifndef TEST
@@ -98,7 +116,10 @@ int main(int argc,char **argv)
     {
         for(int i = 0;i < last_newest_file_count;i++)
         {
-            free(last_newest_file_ptr_ptr[i]);
+            if(last_newest_file_ptr_ptr[i] != NULL)
+            {
+                free(last_newest_file_ptr_ptr[i]);
+            }
         }
         free(last_newest_file_ptr_ptr);
         last_newest_file_ptr_ptr = NULL;
