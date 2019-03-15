@@ -53,6 +53,8 @@ int file_list_write(void *buffer, size_t size, size_t nmemb, void *stream)
     strncpy(out->list_ptr + old_len, buffer, add_len);
     out->list_ptr[old_len + add_len] = 0;
 
+//    printf("%s\n", out->list_ptr);
+
     return nmemb;
 }
 
@@ -127,7 +129,6 @@ int get_newest_files(const char *path_ptr, const char *user_pwd_ptr, char ***new
     int ret = 0;
 
     CURLcode curl_list_code = curl_file_list(path_ptr, user_pwd_ptr, &file_info_list);
-    printf("%s\n", path_ptr);
     if(curl_list_code != CURLE_OK)
     {
         ret = -1;
@@ -248,14 +249,14 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
                         NULL
                 };
                 CURLcode curl_code = curl_file(newest_file_ptr, conf_ptr->user_pwd, &file);
-                if(curl_code == CURLE_OK)
+                if(curl_code != CURLE_OK)
                 {
                     free(newest_file_ptr_ptr[i]);
                     newest_file_ptr_ptr[i] = NULL;
                 }
             }
             #ifdef TEST
-            newest_file_count = 2;
+            newest_file_count = 1;
             #endif
         }
     }

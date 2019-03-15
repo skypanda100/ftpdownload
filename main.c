@@ -55,16 +55,14 @@ int main(int argc,char **argv)
     #ifndef TEST
     for(;;)
     {
+    #else
+    for(int loop = 0;loop < 2;loop++)
+    {
     #endif
         // find newest files
         char **newest_file_ptr_ptr = NULL;
         int newest_file_count = 0;
         int ret = get_newest_files(cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
-
-//        for(int i = 0;i < newest_file_count;i++)
-//        {
-//            printf("%s\n", newest_file_ptr_ptr[i]);
-//        }
         printf("newest files count: %d\n", newest_file_count);
 
         if(ret == 0)
@@ -72,7 +70,8 @@ int main(int argc,char **argv)
             // diff and download
             if(!is_first)
             {
-                diff_and_download(&cf, newest_file_ptr_ptr, newest_file_count, last_newest_file_ptr_ptr, last_newest_file_count);
+                diff_and_download(&cf, newest_file_ptr_ptr, newest_file_count, last_newest_file_ptr_ptr,
+                                  last_newest_file_count);
             }
             is_first = 0;
 
@@ -91,7 +90,9 @@ int main(int argc,char **argv)
 
             last_newest_file_ptr_ptr = newest_file_ptr_ptr;
             last_newest_file_count = newest_file_count;
-        } else {
+        }
+        else
+        {
             printf("some errors happened in listing files!\n");
             if(newest_file_ptr_ptr != NULL)
             {
@@ -109,8 +110,8 @@ int main(int argc,char **argv)
 
     #ifndef TEST
         sleep(cf.sleep_time);
-    }
     #endif
+    }
 
     if(last_newest_file_ptr_ptr != NULL)
     {
