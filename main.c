@@ -40,6 +40,12 @@ int main(int argc,char **argv)
         exit(1);
     }
 
+    if(cf.low_speed_time < 30)
+    {
+        printf("low_speed_time must be greater than 30!!\n");
+        exit(1);
+    }
+
     #ifndef TEST
     daemon(0, 0);
     #endif
@@ -62,7 +68,7 @@ int main(int argc,char **argv)
         // find newest files
         char **newest_file_ptr_ptr = NULL;
         int newest_file_count = 0;
-        int ret = get_newest_files(cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
+        int ret = get_newest_files(cf.low_speed_time, cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
         printf("newest files count: %d\n", newest_file_count);
 
         if(ret == 0)

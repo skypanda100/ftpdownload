@@ -72,7 +72,7 @@ int file_write(void *buffer, size_t size, size_t nmemb, void *stream)
     return fwrite(buffer, size, nmemb, out->fp);
 }
 
-CURLcode curl_file_list(const char *path_ptr, const char *user_pwd_ptr, ftp_file_list *file_list_ptr)
+CURLcode curl_file_list(const int low_speed_time, const char *path_ptr, const char *user_pwd_ptr, ftp_file_list *file_list_ptr)
 {
     curl_global_init(CURL_GLOBAL_DEFAULT);
     CURL *curl = curl_easy_init();
@@ -82,7 +82,7 @@ CURLcode curl_file_list(const char *path_ptr, const char *user_pwd_ptr, ftp_file
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, file_list_ptr);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, file_list_write);
     curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 10);
-    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 30);
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, low_speed_time);
 //    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
     CURLcode curl_code = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -91,7 +91,7 @@ CURLcode curl_file_list(const char *path_ptr, const char *user_pwd_ptr, ftp_file
     return curl_code;
 }
 
-CURLcode curl_file(const char *path_ptr, const char *user_pwd_ptr, ftp_file *file_ptr)
+CURLcode curl_file(const int low_speed_time, const char *path_ptr, const char *user_pwd_ptr, ftp_file *file_ptr)
 {
     curl_global_init(CURL_GLOBAL_DEFAULT);
     CURL *curl = curl_easy_init();
@@ -100,7 +100,7 @@ CURLcode curl_file(const char *path_ptr, const char *user_pwd_ptr, ftp_file *fil
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, file_ptr);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, file_write);
     curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 10);
-    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 30);
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, low_speed_time);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
     CURLcode curl_code = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -121,14 +121,14 @@ CURLcode curl_file(const char *path_ptr, const char *user_pwd_ptr, ftp_file *fil
     return curl_code;
 }
 
-int get_newest_files(const char *path_ptr, const char *user_pwd_ptr, char ***newest_file_ptr_ptr_ptr, int *newest_file_count_ptr)
+int get_newest_files(const int low_speed_time, const char *path_ptr, const char *user_pwd_ptr, char ***newest_file_ptr_ptr_ptr, int *newest_file_count_ptr)
 {
     char *split_line_ptr = "\n";
     char *split_space_ptr = " ";
     ftp_file_list file_info_list = {NULL};
     int ret = 0;
 
-    CURLcode curl_list_code = curl_file_list(path_ptr, user_pwd_ptr, &file_info_list);
+    CURLcode curl_list_code = curl_file_list(low_speed_time, path_ptr, user_pwd_ptr, &file_info_list);
     if(curl_list_code != CURLE_OK)
     {
         ret = -1;
@@ -158,7 +158,7 @@ int get_newest_files(const char *path_ptr, const char *user_pwd_ptr, char ***new
                     {
                         char sub_dir_path[1024] = {0};
                         sprintf(sub_dir_path, "%s/%s/", path_ptr, dir_name_ptr);
-                        ret = get_newest_files(sub_dir_path, user_pwd_ptr, newest_file_ptr_ptr_ptr, newest_file_count_ptr);
+                        ret = get_newest_files(low_speed_time, sub_dir_path, user_pwd_ptr, newest_file_ptr_ptr_ptr, newest_file_count_ptr);
                     }
                     free(dir_name_ptr);
                     if(ret != 0)
@@ -248,7 +248,7 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
                         path,
                         NULL
                 };
-                CURLcode curl_code = curl_file(newest_file_ptr, conf_ptr->user_pwd, &file);
+                CURLcode curl_code = curl_file(conf_ptr->low_speed_time, newest_file_ptr, conf_ptr->user_pwd, &file);
                 if(curl_code != CURLE_OK)
                 {
                     free(newest_file_ptr_ptr[i]);

@@ -7,6 +7,7 @@ static char *key_src_dir = "src_dir";
 static char *key_dst_dir = "dst_dir";
 static char *key_user_pwd = "user_pwd";
 static char *key_sleep_time = "sleep_time";
+static char *key_low_speed_time = "low_speed_time";
 
 static char *l_trim(char *output, const char *input)
 {
@@ -42,6 +43,7 @@ void config(conf *conf_ptr, char *conf)
     char val_dst_dir[1024] = {0};
     char val_user_pwd[128] = {0};
     char val_sleep_time[12] = {0};
+    char val_low_speed_time[12] = {0};
     char *buf, *c;
     char buf_i[1024], buf_o[1024];
     FILE *fp;
@@ -121,6 +123,19 @@ void config(conf *conf_ptr, char *conf)
                     val_o = NULL;
                 }
             }
+            else if(strcmp(key, key_low_speed_time) == 0)
+            {
+                sscanf(++c, "%[^\n]", val_low_speed_time);
+                char *val_o = (char *)malloc(strlen(val_low_speed_time) + 1);
+                if(val_o != NULL){
+                    memset(val_o, 0, strlen(val_low_speed_time) + 1);
+                    a_trim(val_o, val_low_speed_time);
+                    if(val_o && strlen(val_o) > 0)
+                        strcpy(val_low_speed_time, val_o);
+                    free(val_o);
+                    val_o = NULL;
+                }
+            }
         }
     }
     fclose(fp);
@@ -139,4 +154,5 @@ void config(conf *conf_ptr, char *conf)
     strcpy(conf_ptr->dst_dir, val_dst_dir);
     strcpy(conf_ptr->user_pwd, val_user_pwd);
     conf_ptr->sleep_time = atoi(val_sleep_time);
+    conf_ptr->low_speed_time = atoi(val_low_speed_time);
 }
