@@ -19,10 +19,16 @@
 
     ```bash
     $ cat /root/ftpdownload/conf/example.conf
+    #数据源
     src_dir=ftp://[ip]/[dir]/
+    #数据存放路径
     dst_dir=[dir]
+    #ftp用户名和密码
     user_pwd=[user]:[password]
+    #下载间隔时间，单位是秒
     sleep_time=300
+    #等待ftp服务器应答的时间，单位是秒
+    low_speed_time=30
     ```
 * execute  
     ```bash
