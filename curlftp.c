@@ -207,14 +207,16 @@ int get_newest_files(const int low_speed_time, const char *path_ptr, const char 
 
 void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int newest_file_count, char **last_newest_file_ptr_ptr, int last_newest_file_count)
 {
+    time_t t_start = time(NULL);
     char local_dir[1024] = {0};
     char dir[1024] = {0};
     char path[1024] = {0};
+    int j = 0;
     for(int i = 0;i < newest_file_count;i++)
     {
         char *newest_file_ptr = newest_file_ptr_ptr[i];
         int is_exist = 0;
-        for(int j = 0;j < last_newest_file_count;j++)
+        for(;j < last_newest_file_count;j++)
         {
             if(last_newest_file_ptr_ptr[j] == NULL)
             {
@@ -222,6 +224,7 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
             }
             if(strcmp(last_newest_file_ptr_ptr[j], newest_file_ptr) == 0)
             {
+                j++;
                 is_exist = 1;
                 break;
             }
@@ -260,4 +263,6 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
             #endif
         }
     }
+    time_t t_end = time(NULL);
+    printf("diff_and_download cost %ld seconds\n", t_end - t_start);
 }
