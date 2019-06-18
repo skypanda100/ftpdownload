@@ -28,6 +28,7 @@ typedef struct st_conf
     int sleep_time;
     int low_speed_time;
     char log_dir[1024];
+    char date_dir[128];
 }conf;
 
 #endif //FTPDOWNLOAD_DEF_H

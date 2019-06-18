@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "def.h"
 #include "config.h"
 #include "curlftp.h"
@@ -70,7 +71,21 @@ int main(int argc,char **argv)
         // find newest files
         char **newest_file_ptr_ptr = NULL;
         int newest_file_count = 0;
-        int ret = get_newest_files(cf.low_speed_time, cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
+        char src_dir[1024] = {0};
+        char date[32] = {0};
+        if(strlen(cf.date_dir) > 0)
+        {
+            time_t t;
+            time(&t);
+            strftime(date, sizeof(date), cf.date_dir, localtime(&t));
+            sprintf(src_dir, "%s/%s", cf.src_dir, date);
+        }
+        else
+        {
+            strcpy(src_dir, cf.src_dir);
+        }
+        LOG("src_dir: %s", src_dir);
+        int ret = get_newest_files(cf.low_speed_time, src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
         LOG("newest files count: %d", newest_file_count);
         if(ret == 0)
         {
