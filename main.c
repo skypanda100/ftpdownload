@@ -78,7 +78,7 @@ int main(int argc,char **argv)
             time_t t;
             time(&t);
             strftime(date, sizeof(date), cf.date_dir, localtime(&t));
-            sprintf(src_dir, "%s/%s", cf.src_dir, date);
+            sprintf(src_dir, "%s/%s/", cf.src_dir, date);
         }
         else
         {
