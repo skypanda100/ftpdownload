@@ -3,6 +3,9 @@
 #include "def.h"
 #include "config.h"
 #include "curlftp.h"
+#include "log.h"
+
+conf cf;
 
 int main(int argc,char **argv)
 {
@@ -12,7 +15,6 @@ int main(int argc,char **argv)
         exit(1);
     }
 
-    conf cf;
     memset(&cf, 0, sizeof(conf));
     config(&cf, argv[1]);
 
@@ -69,8 +71,7 @@ int main(int argc,char **argv)
         char **newest_file_ptr_ptr = NULL;
         int newest_file_count = 0;
         int ret = get_newest_files(cf.low_speed_time, cf.src_dir, cf.user_pwd, &newest_file_ptr_ptr, &newest_file_count);
-        printf("newest files count: %d\n", newest_file_count);
-
+        LOG("newest files count: %d", newest_file_count);
         if(ret == 0)
         {
             // diff and download
@@ -99,7 +100,7 @@ int main(int argc,char **argv)
         }
         else
         {
-            printf("some errors happened in listing files!\n");
+            LOG("some errors happened in listing files!");
             if(newest_file_ptr_ptr != NULL)
             {
                 for(int i = 0;i < newest_file_count;i++)

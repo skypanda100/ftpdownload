@@ -254,8 +254,13 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
                 CURLcode curl_code = curl_file(conf_ptr->low_speed_time, newest_file_ptr, conf_ptr->user_pwd, &file);
                 if(curl_code != CURLE_OK)
                 {
+                    LOG("download failed: %s", newest_file_ptr);
                     free(newest_file_ptr_ptr[i]);
                     newest_file_ptr_ptr[i] = NULL;
+                }
+                else
+                {
+                    LOG("download successfully: %s", newest_file_ptr);
                 }
             }
             #ifdef TEST
@@ -264,5 +269,5 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
         }
     }
     time_t t_end = time(NULL);
-    printf("diff_and_download cost %ld seconds\n", t_end - t_start);
+    LOG("diff_and_download cost %ld seconds", t_end - t_start);
 }

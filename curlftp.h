@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "def.h"
+#include "log.h"
 
 int make_dir(const char *path_ptr);
 int file_list_write(void *buffer, size_t size, size_t nmemb, void *stream);
