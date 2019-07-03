@@ -12,8 +12,9 @@
     $ cd /root/ftpdownload
     $ mkdir build
     $ cd build
-    $ cmake ..
+    $ cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ ..
     $ make
+    $ sudo make install
     ```
 * conf
 
@@ -33,6 +34,5 @@
     log_dir=[dir]    ```
 * execute  
     ```bash
-    $ cd /root/ftpdownload/build
-    $ ./ftpdownload /root/ftpdownload/conf/example.conf
+    $ ftpdownload /root/ftpdownload/conf/example.conf
     ```

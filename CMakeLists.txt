@@ -12,3 +12,7 @@ endif ()
 set(SOURCE_FILES main.c config.h config.c curlftp.h curlftp.c def.h log.c log.h)
 add_executable(ftpdownload ${SOURCE_FILES})
 target_link_libraries(ftpdownload curl)
+
+INSTALL(TARGETS ftpdownload
+        RUNTIME DESTINATION bin
+        )
