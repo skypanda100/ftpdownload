@@ -75,10 +75,10 @@ void config(conf *conf_ptr, char *conf)
             if((c = strchr(buf, '=')) == NULL)
                 continue;
             memset(key, 0, sizeof(key));
-            sscanf(buf, "%[^=|^ |^\t]", key);
+            sscanf(buf, "%[^= \t]", key);
             if(strcmp(key, key_src_dir) == 0)
             {
-                sscanf(++c, "%[^\n]", val_src_dir);
+                sscanf(++c, "%[^\n\r]", val_src_dir);
                 char *val_o = (char *)malloc(strlen(val_src_dir) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_src_dir) + 1);
@@ -91,7 +91,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_dst_dir) == 0)
             {
-                sscanf(++c, "%[^\n]", val_dst_dir);
+                sscanf(++c, "%[^\n\r]", val_dst_dir);
                 char *val_o = (char *)malloc(strlen(val_dst_dir) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_dst_dir) + 1);
@@ -104,7 +104,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_user_pwd) == 0)
             {
-                sscanf(++c, "%[^\n]", val_user_pwd);
+                sscanf(++c, "%[^\n\r]", val_user_pwd);
                 char *val_o = (char *)malloc(strlen(val_user_pwd) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_user_pwd) + 1);
@@ -117,7 +117,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_sleep_time) == 0)
             {
-                sscanf(++c, "%[^\n]", val_sleep_time);
+                sscanf(++c, "%[^\n\r]", val_sleep_time);
                 char *val_o = (char *)malloc(strlen(val_sleep_time) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_sleep_time) + 1);
@@ -130,7 +130,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_low_speed_time) == 0)
             {
-                sscanf(++c, "%[^\n]", val_low_speed_time);
+                sscanf(++c, "%[^\n\r]", val_low_speed_time);
                 char *val_o = (char *)malloc(strlen(val_low_speed_time) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_low_speed_time) + 1);
@@ -143,7 +143,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_log_dir) == 0)
             {
-                sscanf(++c, "%[^\n]", val_log_dir);
+                sscanf(++c, "%[^\n\r]", val_log_dir);
                 char *val_o = (char *)malloc(strlen(val_log_dir) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_log_dir) + 1);
@@ -156,7 +156,7 @@ void config(conf *conf_ptr, char *conf)
             }
             else if(strcmp(key, key_date_dir) == 0)
             {
-                sscanf(++c, "%[^\n]", val_date_dir);
+                sscanf(++c, "%[^\n\r]", val_date_dir);
                 char *val_o = (char *)malloc(strlen(val_date_dir) + 1);
                 if(val_o != NULL){
                     memset(val_o, 0, strlen(val_date_dir) + 1);
