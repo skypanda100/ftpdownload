@@ -31,7 +31,8 @@
     #等待ftp服务器应答的时间，单位是秒
     low_speed_time=30
     #日志目录
-    log_dir=[dir]    ```
+    log_dir=[dir]    
+    ```
 * execute  
     ```bash
     $ ftpdownload /root/ftpdownload/conf/example.conf
