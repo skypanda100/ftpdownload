@@ -127,12 +127,29 @@ int get_newest_files(const int low_speed_time, const char *path_ptr, const char 
     char *split_space_ptr = " ";
     ftp_file_list file_info_list = {NULL};
     int ret = 0;
+    int loop = 3;
 
-    CURLcode curl_list_code = curl_file_list(low_speed_time, path_ptr, user_pwd_ptr, &file_info_list);
-    if(curl_list_code != CURLE_OK)
+    int loop_index = 0;
+    for(; loop_index < loop; loop_index++)
     {
-        ret = -1;
+        CURLcode curl_list_code = curl_file_list(low_speed_time, path_ptr, user_pwd_ptr, &file_info_list);
+        if(curl_list_code != CURLE_OK)
+        {
+//            ret = -1;
+            LOG("curl file failed: %s, current loop is %d", path_ptr, loop_index);
+            sleep(2);
+        }
+        else
+        {
+            break;
+        }
     }
+    if(loop_index == loop)
+    {
+        LOG("curl file failed: %s, ignore it", path_ptr);
+        return ret;
+    }
+
     char *file_info_tmp_ptr = file_info_list.list_ptr;
     char *file_info_ptr = NULL;
     while(file_info_ptr = strsep(&file_info_tmp_ptr, split_line_ptr))
