@@ -228,12 +228,12 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
     char local_dir[1024] = {0};
     char dir[1024] = {0};
     char path[1024] = {0};
-    int j = 0;
+
     for(int i = 0;i < newest_file_count;i++)
     {
         char *newest_file_ptr = newest_file_ptr_ptr[i];
         int is_exist = 0;
-        for(;j < last_newest_file_count;j++)
+        for(int j = 0;j < last_newest_file_count;j++)
         {
             if(last_newest_file_ptr_ptr[j] == NULL)
             {
@@ -241,7 +241,6 @@ void diff_and_download(const conf *conf_ptr, char **newest_file_ptr_ptr, int new
             }
             if(strcmp(last_newest_file_ptr_ptr[j], newest_file_ptr) == 0)
             {
-                j++;
                 is_exist = 1;
                 break;
             }
